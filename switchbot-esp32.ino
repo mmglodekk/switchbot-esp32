@@ -12,7 +12,7 @@ static BLERemoteCharacteristic* pRemoteCharacteristic;
 static BLEAdvertisedDevice* myDevice;
 
 // Configure time between power and comunication trial.
-static int pressDelay = 5;
+static int pressDelay = 7;
 
 static void notifyCallback(
   BLERemoteCharacteristic* pBLERemoteCharacteristic,
@@ -132,12 +132,13 @@ void loop() {
       Serial.println("Setting new characteristic value");
       static uint8_t cmd_press[3] = {0x57, 0x01, 0x00};
       pRemoteCharacteristic->writeValue(cmd_press, sizeof(cmd_press));
+      delay(500); 
       alreadyPressed = true;
       // important - disconnect from switchbot.
       pClient->disconnect();
       // no need to stay active
-      esp_deep_sleep_start();
       Serial.println("Success!");
+      esp_deep_sleep_start();
     }
     
     delay(1000);    
